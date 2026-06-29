@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Trash2 } from "lucide-react";
 
-import { calculateHours, formatTimeAMPM } from "@/lib/timeUtils";
+import { calculateHours, formatTimeAMPM, formatHoursMinutes } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 
 type WorkSessionCardProps = {
@@ -42,7 +42,7 @@ export default function WorkSessionCard({
             </div>
             <div className="text-right">
               <p className="text-2xl font-bold text-primary">
-                {hours.toFixed(2)}h
+                {formatHoursMinutes(hours)}
               </p>
             </div>
           </div>

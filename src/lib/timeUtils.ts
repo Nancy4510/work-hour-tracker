@@ -43,3 +43,14 @@ export function formatTimeAMPM(time: string): string {
 
   return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
 }
+
+/**
+ * Formats decimal hours (e.g. 8.67) as "8h 40m".
+ * Rounds to the nearest minute to avoid floating-point drift.
+ */
+export function formatHoursMinutes(decimalHours: number): string {
+  const totalMinutes = Math.round(decimalHours * 60);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  return `${h}h ${m.toString().padStart(2, "0")}m`;
+}
