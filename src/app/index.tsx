@@ -59,7 +59,7 @@ export default function MainPage() {
     setClockOut("");
     // TODO: Add toast notification
     console.log(
-      `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`
+      `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`,
     );
   };
 
@@ -187,7 +187,7 @@ export default function MainPage() {
               // TODO: Add toast notification
               <Toaster />;
               console.log(
-                "La hora de salida debe ser después de la hora de entrada"
+                "La hora de salida debe ser después de la hora de entrada",
               );
               return;
             }
@@ -203,7 +203,7 @@ export default function MainPage() {
             setSessions([newSession, ...sessions]);
             // TODO: Add toast notification
             console.log(
-              `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`
+              `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`,
             );
           }}
         />
