@@ -15,9 +15,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Calendar } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 import WorkSessionCard from "./../components/workSessionCard";
 import { getSessionsForDay, isToday } from "@/lib/dateUtils";
-import { calculateHours, formatTimeAMPM, formatHoursMinutes } from "@/lib/timeUtils";
+import {
+  calculateHours,
+  formatTimeAMPM,
+  formatHoursMinutes,
+} from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 
 type WeeklyTableProps = {
@@ -98,7 +103,7 @@ export default function WeeklyTable({
   const updateDayInput = (
     date: Date,
     field: "clockIn" | "clockOut",
-    value: string
+    value: string,
   ) => {
     const dayKey = getDayKey(date);
     setDayInputs((prev) => ({
@@ -115,8 +120,11 @@ export default function WeeklyTable({
     const dayKey = getDayKey(date);
     const inputs = dayInputs[dayKey];
 
-    if (!inputs?.clockIn || !inputs?.clockOut) {
-      // TODO: Show error toast
+    if (!inputs?.clockIn) {
+      toast.error("Debe agregar una hora de entrada");
+      return;
+    } else if (!inputs?.clockOut) {
+      toast.error("Debe agregar una hora de salida");
       return;
     }
 
@@ -227,14 +235,14 @@ export default function WeeklyTable({
                           {formatHoursMinutes(dayTotal)}
                         </span>
                       ) : (
-                        <span className="text-gray-500">0h 00m</span>
+                        <span className="text-gray-500">0h:00m</span>
                       )}
                     </TableCell>
                     <TableCell>
                       <Button
                         size="sm"
                         onClick={() => handleAddSessionForDay(date)}
-                        disabled={!dayInput.clockIn || !dayInput.clockOut}
+                        disabled={!dayInput.clockIn && !dayInput.clockOut}
                         className="w-full"
                       >
                         <Plus className="w-4 h-4 hover:bg-primary/10" />
@@ -266,7 +274,7 @@ export default function WeeklyTable({
             {sessions
               .sort(
                 (a, b) =>
-                  new Date(b.dateObj).getTime() - new Date(a.dateObj).getTime()
+                  new Date(b.dateObj).getTime() - new Date(a.dateObj).getTime(),
               )
               .map((session) => (
                 <WorkSessionCard
