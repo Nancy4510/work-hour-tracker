@@ -17,7 +17,7 @@ import { Plus, Calendar } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import WorkSessionCard from "./../components/workSessionCard";
 import { getSessionsForDay, isToday } from "@/lib/dateUtils";
-import { calculateHours, formatTimeAMPM } from "@/lib/timeUtils";
+import { calculateHours, formatTimeAMPM, formatHoursMinutes } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 
 type WeeklyTableProps = {
@@ -224,10 +224,10 @@ export default function WeeklyTable({
                     <TableCell className="text-center">
                       {dayTotal > 0 ? (
                         <span className="font-bold">
-                          {dayTotal.toFixed(2)}h
+                          {formatHoursMinutes(dayTotal)}
                         </span>
                       ) : (
-                        <span className="text-gray-500">0.00h</span>
+                        <span className="text-gray-500">0h 00m</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -250,7 +250,7 @@ export default function WeeklyTable({
                 colSpan={6}
                 className="glass-subtle text-right font-bold text-lg"
               >
-                Total: {weeklyHours.toFixed(2)}h
+                Total: {formatHoursMinutes(weeklyHours)}
               </TableCell>
             </TableRow>
           </TableFooter>

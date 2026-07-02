@@ -26,7 +26,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+.env*
+.env
+.local
 
 # vercel
 .vercel
@@ -43,3 +45,15 @@ next-env.d.ts
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+
+# Claude Code files
+.junie
+CLAUDE.md
+CLAUDE_*.md
+claude-*.md
+.claude
+.cursor/mcp.json
+.vscode/mcp.json
+.mcp.json
+.omc
