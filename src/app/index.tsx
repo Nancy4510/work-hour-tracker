@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 
 import { Clock } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { calculateHours } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 import WeeklyTable from "./../components/weeklyTable";
@@ -34,17 +34,18 @@ export default function MainPage() {
   const currentWeek = useMemo(() => getWeekDates(selectedDate), [selectedDate]);
 
   const handleAddSession = () => {
-    if (!clockIn || !clockOut) {
-      // TODO: Add toast notification
-      console.log(`clockIn: ${clockIn}, clockOut: ${clockOut}`);
+    if (!clockIn) {
+      toast.error("Debe agregar una hora de entrada");
+      return;
+    } else if (!clockOut) {
+      toast.error("Debe agregar una hora de salida");
       return;
     }
 
     const hours = calculateHours(clockIn, clockOut);
 
     if (hours <= 0) {
-      // TODO: Add toast notification
-      console.log(`La hora de salida debe ser después de la hora de entrada`);
+      toast.error("La hora de salida debe ser después de la hora de entrada");
       return;
     }
     const newSession: WorkSession = {
@@ -57,16 +58,14 @@ export default function MainPage() {
     setSessions([newSession, ...sessions]);
     setClockIn("");
     setClockOut("");
-    // TODO: Add toast notification
-    console.log(
+    toast.success(
       `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`,
     );
   };
 
   const handleDeleteSession = (id: string) => {
     setSessions(sessions.filter((s) => s.id !== id));
-    // TODO: Add toast notification
-    console.log(`Sesión eliminada: ${id}`);
+    toast.success(`Sesión eliminada: ${id}`);
   };
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
@@ -184,9 +183,7 @@ export default function MainPage() {
             const hours = calculateHours(clockIn, clockOut);
 
             if (hours <= 0) {
-              // TODO: Add toast notification
-              <Toaster />;
-              console.log(
+              toast.error(
                 "La hora de salida debe ser después de la hora de entrada",
               );
               return;
@@ -201,8 +198,7 @@ export default function MainPage() {
             };
 
             setSessions([newSession, ...sessions]);
-            // TODO: Add toast notification
-            console.log(
+            toast.success(
               `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`,
             );
           }}
