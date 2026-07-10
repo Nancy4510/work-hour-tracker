@@ -4,7 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Trash2 } from "lucide-react";
 
-import { calculateHours, formatTimeAMPM, formatHoursMinutes } from "@/lib/timeUtils";
+import {
+  calculateHours,
+  formatTimeAMPM,
+  formatHoursMinutes,
+} from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 
 type WorkSessionCardProps = {

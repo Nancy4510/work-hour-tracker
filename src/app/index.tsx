@@ -65,8 +65,7 @@ export default function MainPage() {
 
   const handleDeleteSession = (id: string) => {
     setSessions(sessions.filter((s) => s.id !== id));
-    // TODO: Add toast notification
-    console.log(`Sesión eliminada: ${id}`);
+    toast.success(`Sesión eliminada`);
   };
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
