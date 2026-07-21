@@ -44,9 +44,9 @@
 }
 
 :root {
-	--radius: 0.625rem;
+	/* --radius: 0.625rem; */
 	/* Natural color theme - sage greens, warm earth tones */
-	/* --background: oklch(0.98 0.01 120); */
+	/* --background: oklch(0.98 0.01 120);
 	--foreground: oklch(0.25 0.05 140);
 	--card: oklch(1 0 0 / 0.7);
 	--card-foreground: oklch(0.25 0.05 140);
@@ -76,11 +76,40 @@
 	--sidebar-accent: oklch(0.97 0 0);
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
+	--sidebar-ring: oklch(0.708 0 0); */
+
+
+	--background: oklch(0.98 0.012 120);
+	/* soft warm off-white, faint green */
+	--foreground: oklch(0.28 0.04 145);
+	/* deep green-gray (softer than near-black) */
+	--card: oklch(1 0 0 / 0.70);
+	--card-foreground: oklch(0.28 0.04 145);
+	--popover: oklch(0.99 0.01 120 / 0.90);
+	--popover-foreground: oklch(0.28 0.04 145);
+	--primary: oklch(0.48 0.11 150);
+	/* sage green (slightly lighter = calmer) */
+	--primary-foreground: oklch(0.98 0.01 120);
+	--secondary: oklch(0.90 0.03 130 / 0.60);
+	--secondary-foreground: oklch(0.35 0.07 145);
+	--muted: oklch(0.93 0.02 125 / 0.50);
+	--muted-foreground: oklch(0.52 0.04 145);
+	/* passes contrast on light bg */
+	--accent: oklch(0.62 0.12 75);
+	/* warm amber, a touch softer */
+	--accent-foreground: oklch(0.20 0.03 145);
+	--destructive: oklch(0.58 0.20 27);
+	--border: oklch(0.75 0.04 145 / 0.35);
+	--input: oklch(1 0 0 / 0.60);
+	--ring: oklch(0.48 0.11 150 / 0.45);
+
+	/* white tint in light mode */
+	--glass-bg: 255 255 255;
+	--glass-border: 255 255 255;
 }
 
 .dark {
-	/* --background: oklch(0.145 0 0); */
+	/* --background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
@@ -110,7 +139,37 @@
 	--sidebar-accent: oklch(0.269 0 0);
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+	--sidebar-ring: oklch(0.556 0 0); */
+
+
+	--background: oklch(0.20 0.02 150);
+	/* deep desaturated forest, not black */
+	--foreground: oklch(0.92 0.02 120);
+	/* warm off-white, not pure white */
+	--card: oklch(0.26 0.025 150 / 0.60);
+	--card-foreground: oklch(0.92 0.02 120);
+	--popover: oklch(0.24 0.025 150 / 0.92);
+	--popover-foreground: oklch(0.92 0.02 120);
+	--primary: oklch(0.72 0.11 150);
+	/* brighter sage so it pops on dark */
+	--primary-foreground: oklch(0.18 0.02 150);
+	--secondary: oklch(0.30 0.03 145 / 0.60);
+	--secondary-foreground: oklch(0.90 0.02 120);
+	--muted: oklch(0.30 0.02 145 / 0.50);
+	--muted-foreground: oklch(0.72 0.03 130);
+	/* readable, low glare */
+	--accent: oklch(0.75 0.12 78);
+	/* warm amber, brightened for dark */
+	--accent-foreground: oklch(0.18 0.02 150);
+	--destructive: oklch(0.70 0.19 22);
+	--border: oklch(0.85 0.03 130 / 0.12);
+	--input: oklch(0.90 0.02 120 / 0.14);
+	--ring: oklch(0.72 0.11 150 / 0.45);
+
+	/* dark green-gray tint in dark mode */
+	--glass-bg: 40 55 45;
+	--glass-border: 200 220 205;
+
 }
 
 @layer base {
@@ -126,16 +185,37 @@
 				oklch(0.97 0.018 100) 100%);
 		min-height: 100vh;
 	} */
+	/* light */
+	body {
+		background: linear-gradient(135deg,
+				oklch(0.98 0.015 120) 0%,
+				oklch(0.95 0.022 145) 50%,
+				oklch(0.97 0.018 100) 100%);
+		min-height: 100vh;
+	}
+
+	/* dark */
+	.dark body {
+		background: linear-gradient(135deg,
+				oklch(0.20 0.02 150) 0%,
+				oklch(0.17 0.025 155) 50%,
+				oklch(0.19 0.02 140) 100%);
+	}
 }
 
 /* Glassmorphism utility classes */
 @layer utilities {
 	.glass {
-		background: oklch(1 0 0 / 0.4);
+		/* background: oklch(1 0 0 / 0.4);
 		backdrop-filter: blur(12px) saturate(180%);
 		-webkit-backdrop-filter: blur(12px) saturate(180%);
 		border: 1px solid oklch(1 0 0 / 0.2);
-		box-shadow: 0 8px 32px 0 oklch(0.2 0.05 140 / 0.15);
+		box-shadow: 0 8px 32px 0 oklch(0.2 0.05 140 / 0.15); */
+
+		background: rgb(var(--glass-bg) / 0.40);
+		border: 1px solid rgb(var(--glass-border) / 0.18);
+		box-shadow: 0 8px 32px 0 oklch(0.15 0.03 150 / 0.20);
+		backdrop-filter: blur(12px) saturate(180%);
 	}
 
 	.glass-strong {
