@@ -235,7 +235,7 @@ export default function WeeklyTable({
                           {formatHoursMinutes(dayTotal)}
                         </span>
                       ) : (
-                        <span className="text-gray-500">0h:00m</span>
+                        <span className="text-muted-foreground">0h:00m</span>
                       )}
                     </TableCell>
                     <TableCell>

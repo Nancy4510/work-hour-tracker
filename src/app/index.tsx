@@ -1,18 +1,21 @@
 "use client";
 
 import { useState, useMemo } from "react";
-
 import { Clock } from "lucide-react";
 import { toast } from "sonner";
 import { calculateHours } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 import WeeklyTable from "./../components/weeklyTable";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useTheme } from "next-themes";
 
 export default function MainPage() {
   const [clockIn, setClockIn] = useState("");
   const [clockOut, setClockOut] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [sessions, setSessions] = useState<WorkSession[]>([]);
+  const { theme, setTheme } = useTheme();
 
   const getWeekDates = (date: Date) => {
     const curr = new Date(date);
@@ -94,6 +97,22 @@ export default function MainPage() {
     <div className="min-h-screen">
       <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-6">
         {/* Header */}
+
+        <div className="absolute right-20 flex gap-2 items-center">
+          <Switch
+            id="dark-mode"
+            size="default"
+            onCheckedChange={() => {
+              if (theme === "dark") {
+                setTheme("light");
+              } else {
+                setTheme("dark");
+              }
+            }}
+          />
+          <Label htmlFor="dark-mode">Dark Mode</Label>
+        </div>
+
         <div className="text-center space-y-2 py-6 glass rounded-2xl px-6">
           <div className="flex items-center justify-center gap-3 mb-2">
             <Clock className="w-10 h-10 text-primary" />
@@ -105,73 +124,21 @@ export default function MainPage() {
             Registra tus horas de trabajo de forma simple
           </p>
         </div>
-
-        {/* Input Card */}
-        {/* <Card className="p-6 md:p-8 shadow-medium">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <label
-                htmlFor="selectedDate"
-                className="text-sm font-semibold text-foreground flex items-center gap-2"
-              >
-                <CalendarDays className="w-4 h-4 text-primary" />
-                Fecha
-              </label>
-              <Input
-                id="selectedDate"
-                type="date"
-                value={selectedDate.toISOString().split("T")[0]}
-                onChange={(e) => setSelectedDate(new Date(e.target.value))}
-                className="h-14 text-lg"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="clockIn"
-                  className="text-sm font-semibold text-foreground flex items-center gap-2"
-                >
-                  <Clock className="w-4 h-4 text-primary" />
-                  Hora de Entrada
-                </label>
-                <Input
-                  id="clockIn"
-                  type="time"
-                  value={clockIn}
-                  onChange={(e) => setClockIn(e.target.value)}
-                  className="h-14 text-lg"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="clockOut"
-                  className="text-sm font-semibold text-foreground flex items-center gap-2"
-                >
-                  <Clock className="w-4 h-4 text-accent" />
-                  Hora de Salida
-                </label>
-                <Input
-                  id="clockOut"
-                  type="time"
-                  value={clockOut}
-                  onChange={(e) => setClockOut(e.target.value)}
-                  className="h-14 text-lg"
-                />
-              </div>
-            </div>
-
-            <Button
-              onClick={handleAddSession}
-              className="w-full h-14 text-lg font-semibold shadow-soft hover:shadow-medium transition-all"
-              size="lg"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Registrar Horario
-            </Button>
-          </div>
-        </Card> */}
+        {/* 
+          <div className="absolute right-0 flex gap-2 items-center">
+            <Switch
+              id="dark-mode"
+              size="default"
+              onCheckedChange={() => {
+                if (theme === "dark") {
+                  setTheme("light");
+                } else {
+                  setTheme("dark");
+                }
+              }}
+            />
+            <Label htmlFor="dark-mode">Dark Mode</Label>
+          </div> */}
 
         <WeeklyTable
           currentWeek={currentWeek}
