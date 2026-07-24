@@ -146,7 +146,7 @@ export default function WeeklyTable({
 
   return (
     <div className="space-y-6">
-      <header className="glass rounded-xl p-4">
+      <header className="glass p-4 rounded-xl">
         <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-2 mr-20">
             <ChevronLeft

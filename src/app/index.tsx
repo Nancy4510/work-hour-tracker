@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { Clock } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Clock, Moon, Sun } from "lucide-react";
 import { toast } from "sonner";
 import { calculateHours } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
@@ -15,7 +15,14 @@ export default function MainPage() {
   const [clockOut, setClockOut] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [sessions, setSessions] = useState<WorkSession[]>([]);
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDarkMode = resolvedTheme === "dark";
 
   const getWeekDates = (date: Date) => {
     const curr = new Date(date);
@@ -102,15 +109,26 @@ export default function MainPage() {
           <Switch
             id="dark-mode"
             size="default"
-            onCheckedChange={() => {
-              if (theme === "dark") {
-                setTheme("light");
-              } else {
-                setTheme("dark");
-              }
-            }}
-          />
-          <Label htmlFor="dark-mode">Dark Mode</Label>
+            className="h-6 w-11"
+            checked={mounted ? isDarkMode : false}
+            onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+            aria-label="Toggle dark mode"
+          >
+            <span className="group-data-[size=default]/switch:size-5 ml-0.5 mt-[2px]">
+              {mounted && isDarkMode ? (
+                <Moon className="size-4 text-white" />
+              ) : (
+                <Sun className="size-4 text-gray-500" />
+              )}
+            </span>
+          </Switch>
+          {/* <span className="group-data-[size=default]/switch:size-5">
+            {mounted && isDarkMode ? (
+              <Moon className="size-3 text-primary" />
+            ) : (
+              <Sun className="size-3 text-yellow-500" />
+            )}
+          </span> */}
         </div>
 
         <div className="text-center space-y-2 py-6 glass rounded-2xl px-6">
