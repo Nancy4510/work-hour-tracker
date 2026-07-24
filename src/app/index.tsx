@@ -73,9 +73,24 @@ export default function MainPage() {
     );
   };
 
+  const handleUpdateSession = (
+    id: string,
+    field: "clockIn" | "clockOut",
+    value: string,
+  ) => {
+    if (!value) return;
+
+    setSessions((prev) =>
+      prev.map((session) =>
+        session.id === id ? { ...session, [field]: value } : session,
+      ),
+    );
+    toast.success(`Hora actualizada`);
+  };
+
   const handleDeleteSession = (id: string) => {
     setSessions(sessions.filter((s) => s.id !== id));
-    toast.success(`Sesión eliminada: ${id}`);
+    toast.success(`Sesión eliminada`);
   };
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
@@ -164,6 +179,7 @@ export default function MainPage() {
           weeklyHours={weeklyHours}
           onChangeWeek={changeWeek}
           onDeleteSession={handleDeleteSession}
+          onUpdateSession={handleUpdateSession}
           onAddSession={(date, clockIn, clockOut) => {
             const hours = calculateHours(clockIn, clockOut);
 
