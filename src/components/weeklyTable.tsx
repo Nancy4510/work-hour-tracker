@@ -13,8 +13,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Calendar } from "lucide-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Plus,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Pencil,
+} from "lucide-react";
 import { toast } from "sonner";
 import WorkSessionCard from "./../components/workSessionCard";
 import { getSessionsForDay, isToday } from "@/lib/dateUtils";
@@ -31,6 +36,11 @@ type WeeklyTableProps = {
   weeklyHours: number;
   onChangeWeek: (direction: number) => void;
   onDeleteSession: (id: string) => void;
+  onUpdateSession: (
+    id: string,
+    field: "clockIn" | "clockOut",
+    value: string,
+  ) => void;
   onAddSession: (date: Date, clockIn: string, clockOut: string) => void;
 };
 
@@ -55,34 +65,69 @@ type TimeInputCellProps = {
   value: string;
   savedTime?: string;
   onChange: (value: string) => void;
+  onSaveEdit?: (value: string) => void;
 };
 
-const TimeInputCell = ({ value, savedTime, onChange }: TimeInputCellProps) => {
-  if (savedTime) {
+const TimeInputCell = ({
+  value,
+  savedTime,
+  onChange,
+  onSaveEdit,
+}: TimeInputCellProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState(savedTime ?? "");
+
+  if (!savedTime) {
     return (
-      <div className="flex flex-col gap-1">
-        <span className="font-semibold text-sm text-primary">
-          {formatTimeAMPM(savedTime)}
-        </span>
-        <Input
-          type="time"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full text-xs glass-subtle"
-          placeholder="Add more"
-        />
-      </div>
+      <Input
+        type="time"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full glass-subtle"
+        placeholder="HH:MM"
+      />
+    );
+  }
+
+  if (isEditing) {
+    return (
+      <Input
+        type="time"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={() => {
+          if (draft && draft !== savedTime) {
+            onSaveEdit?.(draft);
+          }
+          setIsEditing(false);
+        }}
+        autoFocus
+        className="w-full glass-subtle"
+        placeholder="HH:MM"
+      />
     );
   }
 
   return (
-    <Input
-      type="time"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full glass-subtle"
-      placeholder="HH:MM"
-    />
+    // <Input
+    //   type="time"
+    //   value={value}
+    //   onChange={(e) => onChange(e.target.value)}
+    //   className="w-full glass-subtle"
+    //   placeholder="HH:MM"
+    // />
+    <button
+      type="button"
+      onClick={() => {
+        setDraft(savedTime);
+        setIsEditing(true);
+      }}
+      title="Editar hora"
+      className="group mx-auto flex items-center gap-1.5 rounded-full px-3 py-1 glass-subtle text-sm font-semibold text-primary hover:glass-strong transition-all"
+    >
+      {formatTimeAMPM(savedTime)}
+      <Pencil className="w-3 h-3 opacity-0 group-hover:opacity-60 transition-opacity" />
+    </button>
   );
 };
 
@@ -92,6 +137,7 @@ export default function WeeklyTable({
   weeklyHours = 0,
   onChangeWeek = () => {},
   onDeleteSession = () => {},
+  onUpdateSession = () => {},
   onAddSession,
 }: WeeklyTableProps) {
   // State to track input values for each day
@@ -218,6 +264,16 @@ export default function WeeklyTable({
                         onChange={(value) =>
                           updateDayInput(date, "clockIn", value)
                         }
+                        onSaveEdit={
+                          firstSession
+                            ? (value) =>
+                                onUpdateSession(
+                                  firstSession.id,
+                                  "clockIn",
+                                  value,
+                                )
+                            : undefined
+                        }
                       />
                     </TableCell>
                     <TableCell>
@@ -226,6 +282,16 @@ export default function WeeklyTable({
                         savedTime={firstSession?.clockOut}
                         onChange={(value) =>
                           updateDayInput(date, "clockOut", value)
+                        }
+                        onSaveEdit={
+                          firstSession
+                            ? (value) =>
+                                onUpdateSession(
+                                  firstSession.id,
+                                  "clockOut",
+                                  value,
+                                )
+                            : undefined
                         }
                       />
                     </TableCell>
