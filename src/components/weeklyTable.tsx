@@ -93,8 +93,8 @@ const TimeInputCell = ({
     return (
       <Input
         type="time"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
         onBlur={() => {
           if (draft && draft !== savedTime) {
             onSaveEdit?.(draft);
