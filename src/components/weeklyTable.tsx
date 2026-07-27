@@ -56,8 +56,15 @@ const formatDate = (date: Date): string => {
 };
 
 // Helper function to get day key (YYYY-MM-DD format)
+// const getDayKey = (date: Date): string => {
+//   return date.toISOString().split("T")[0];
+// };
+
 const getDayKey = (date: Date): string => {
-  return date.toISOString().split("T")[0];
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 };
 
 // Component for time input cell
@@ -337,7 +344,7 @@ export default function WeeklyTable({
             Detalle de Sesiones
           </h2>
           <div className="space-y-3">
-            {sessions
+            {[...sessions]
               .sort(
                 (a, b) =>
                   new Date(b.dateObj).getTime() - new Date(a.dateObj).getTime(),

@@ -6,23 +6,37 @@ const MINUTES_IN_DAY = HOURS_IN_DAY * MINUTES_IN_HOUR;
  * Calculates the number of hours between two time strings (HH:MM format)
  * Handles overnight shifts (when end time is before start time)
  */
+
+// export function calculateHours(start: string, end: string): number {
+//   if (!start || !end) return 0;
+
+//   const [startHour, startMinute] = start.split(":").map(Number);
+//   const [endHour, endMinute] = end.split(":").map(Number);
+
+//   const startMinutes = startHour * MINUTES_IN_HOUR + startMinute;
+//   const endMinutes = endHour * MINUTES_IN_HOUR + endMinute;
+
+//   let diffMinutes = endMinutes - startMinutes;
+
+//   // Handle overnight shifts (e.g., 22:00 to 06:00)
+//   if (diffMinutes < 0) {
+//     diffMinutes += MINUTES_IN_DAY;
+//   }
+
+//   return diffMinutes / MINUTES_IN_HOUR;
+// }
+
 export function calculateHours(start: string, end: string): number {
   if (!start || !end) return 0;
+  const [sh, sm] = start.split(":").map(Number);
+  const [eh, em] = end.split(":").map(Number);
+  if ([sh, sm, eh, em].some(Number.isNaN)) return 0;
 
-  const [startHour, startMinute] = start.split(":").map(Number);
-  const [endHour, endMinute] = end.split(":").map(Number);
-
-  const startMinutes = startHour * MINUTES_IN_HOUR + startMinute;
-  const endMinutes = endHour * MINUTES_IN_HOUR + endMinute;
-
-  let diffMinutes = endMinutes - startMinutes;
-
-  // Handle overnight shifts (e.g., 22:00 to 06:00)
-  if (diffMinutes < 0) {
-    diffMinutes += MINUTES_IN_DAY;
-  }
-
-  return diffMinutes / MINUTES_IN_HOUR;
+  const startMinutes = sh * MINUTES_IN_HOUR + sm;
+  const endMinutes = eh * MINUTES_IN_HOUR + em;
+  let diff = endMinutes - startMinutes;
+  if (diff < 0) diff += MINUTES_IN_DAY; // overnight
+  return diff / MINUTES_IN_HOUR;
 }
 
 /**

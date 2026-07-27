@@ -7,7 +7,6 @@ import { calculateHours } from "@/lib/timeUtils";
 import type { WorkSession } from "@/app/types";
 import WeeklyTable from "./../components/weeklyTable";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { useTheme } from "next-themes";
 
 export default function MainPage() {
@@ -59,11 +58,12 @@ export default function MainPage() {
       return;
     }
     const newSession: WorkSession = {
-      id: Date.now().toString(),
+      //
+      id: crypto.randomUUID(),
       clockIn,
       clockOut,
       date: selectedDate.toISOString(),
-      dateObj: new Date(selectedDate),
+      // dateObj: new Date(selectedDate),
     };
     setSessions([newSession, ...sessions]);
     setClockIn("");
@@ -95,12 +95,18 @@ export default function MainPage() {
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
 
-    const weekStart = currentWeek[0];
+    // const weekStart = currentWeek[0];
+    // const weekEnd = new Date(currentWeek[6]);
+    // weekEnd.setHours(23, 59, 59, 999);
+
+    const weekStart = new Date(currentWeek[0]);
+    weekStart.setHours(0, 0, 0, 0);
     const weekEnd = new Date(currentWeek[6]);
     weekEnd.setHours(23, 59, 59, 999);
 
     const weekSessions = sessions.filter((session) => {
-      const sessionDate = new Date(session.dateObj);
+      // const sessionDate = new Date(session.dateObj);
+      const sessionDate = new Date(session.date);
       return sessionDate >= weekStart && sessionDate <= weekEnd;
     });
 
@@ -195,7 +201,7 @@ export default function MainPage() {
               clockIn,
               clockOut,
               date: date.toISOString(),
-              dateObj: new Date(date),
+              // dateObj: new Date(date),
             };
 
             setSessions([newSession, ...sessions]);
