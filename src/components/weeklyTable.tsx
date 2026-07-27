@@ -209,19 +209,29 @@ export default function WeeklyTable({
       <header className="glass p-4 rounded-xl">
         <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-2 mr-20">
-            <ChevronLeft
-              className="w-5 h-5 cursor-pointer text-primary hover:text-accent transition-colors"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              aria-label="Semana anterior"
               onClick={() => onChangeWeek(-1)}
-            />
+            >
+              <ChevronLeft className="w-5 h-5 text-primary" />
+            </Button>
             <h2 className="font-bold text-foreground">Semana anterior</h2>
           </div>
           <div className="flex items-center gap-2 ml-20">
             <h2 className="font-bold text-foreground">Siguiente semana</h2>
           </div>
-          <ChevronRight
-            className="w-5 h-5 cursor-pointer text-primary hover:text-accent transition-colors"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            aria-label="Siguiente semana"
             onClick={() => onChangeWeek(1)}
-          />
+          >
+            <ChevronRight className="w-5 h-5 text-primary" />
+          </Button>
         </div>
       </header>
       <div className="glass-strong rounded-xl">
@@ -322,7 +332,7 @@ export default function WeeklyTable({
                       <Button
                         size="sm"
                         onClick={() => handleAddSessionForDay(date)}
-                        disabled={!dayInput.clockIn && !dayInput.clockOut}
+                        disabled={!dayInput.clockIn || !dayInput.clockOut}
                         className="w-full"
                       >
                         <Plus className="w-4 h-4 hover:bg-primary/10" />

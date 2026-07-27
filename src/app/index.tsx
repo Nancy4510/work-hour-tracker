@@ -10,8 +10,6 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "next-themes";
 
 export default function MainPage() {
-  const [clockIn, setClockIn] = useState("");
-  const [clockOut, setClockOut] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [sessions, setSessions] = useState<WorkSession[]>([]);
   const { setTheme, resolvedTheme } = useTheme();
@@ -42,37 +40,6 @@ export default function MainPage() {
 
   const currentWeek = useMemo(() => getWeekDates(selectedDate), [selectedDate]);
 
-  const handleAddSession = () => {
-    if (!clockIn) {
-      toast.error("Debe agregar una hora de entrada");
-      return;
-    } else if (!clockOut) {
-      toast.error("Debe agregar una hora de salida");
-      return;
-    }
-
-    const hours = calculateHours(clockIn, clockOut);
-
-    if (hours <= 0) {
-      toast.error("La hora de salida debe ser después de la hora de entrada");
-      return;
-    }
-    const newSession: WorkSession = {
-      //
-      id: crypto.randomUUID(),
-      clockIn,
-      clockOut,
-      date: selectedDate.toISOString(),
-      // dateObj: new Date(selectedDate),
-    };
-    setSessions([newSession, ...sessions]);
-    setClockIn("");
-    setClockOut("");
-    toast.success(
-      `Sesión agregada: ${newSession.clockIn} - ${newSession.clockOut}`,
-    );
-  };
-
   const handleUpdateSession = (
     id: string,
     field: "clockIn" | "clockOut",
@@ -101,7 +68,6 @@ export default function MainPage() {
     weekEnd.setHours(23, 59, 59, 999);
 
     const weekSessions = sessions.filter((session) => {
-      // const sessionDate = new Date(session.dateObj);
       const sessionDate = new Date(session.date);
       return sessionDate >= weekStart && sessionDate <= weekEnd;
     });
@@ -171,7 +137,7 @@ export default function MainPage() {
             }
 
             const newSession: WorkSession = {
-              id: Date.now().toString(),
+              id: crypto.randomUUID(),
               clockIn,
               clockOut,
               date: date.toISOString(),
