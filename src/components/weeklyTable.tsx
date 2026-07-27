@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Pencil,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import WorkSessionCard from "./../components/workSessionCard";
@@ -56,8 +57,12 @@ const formatDate = (date: Date): string => {
 };
 
 // Helper function to get day key (YYYY-MM-DD format)
+
 const getDayKey = (date: Date): string => {
-  return date.toISOString().split("T")[0];
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 };
 
 // Component for time input cell
@@ -91,31 +96,40 @@ const TimeInputCell = ({
 
   if (isEditing) {
     return (
-      <Input
-        type="time"
-        value={draft}
-        onChange={(e) => setDraft(e.target.value)}
-        onBlur={() => {
-          if (draft && draft !== savedTime) {
-            onSaveEdit?.(draft);
-          }
-          setIsEditing(false);
-        }}
-        autoFocus
-        className="w-full glass-subtle"
-        placeholder="HH:MM"
-      />
+      <div className="flex items-center gap-1">
+        <Input
+          type="time"
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onBlur={() => {
+            if (draft && draft !== savedTime) {
+              onSaveEdit?.(draft);
+            }
+            setIsEditing(false);
+          }}
+          autoFocus
+          className="w-full glass-subtle"
+          placeholder="HH:MM"
+        />
+        <button
+          type="button"
+          // Prevent the input's onBlur (which would save the draft) from
+          // firing before this click — keeps the cancel a true discard.
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => {
+            setDraft(savedTime); // discard any edits
+            setIsEditing(false); // leave edit mode without saving
+          }}
+          title="Cancelar"
+          className="flex items-center justify-center rounded-full p-1 glass-subtle text-muted-foreground hover:text-destructive transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
     );
   }
 
   return (
-    // <Input
-    //   type="time"
-    //   value={value}
-    //   onChange={(e) => onChange(e.target.value)}
-    //   className="w-full glass-subtle"
-    //   placeholder="HH:MM"
-    // />
     <button
       type="button"
       onClick={() => {
@@ -337,10 +351,10 @@ export default function WeeklyTable({
             Detalle de Sesiones
           </h2>
           <div className="space-y-3">
-            {sessions
+            {[...sessions]
               .sort(
                 (a, b) =>
-                  new Date(b.dateObj).getTime() - new Date(a.dateObj).getTime(),
+                  new Date(b.date).getTime() - new Date(a.date).getTime(),
               )
               .map((session) => (
                 <WorkSessionCard

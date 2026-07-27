@@ -10,12 +10,12 @@ export function isSameDayDate(date1: Date, date2: Date): boolean {
 /**
  * Gets all sessions that belong to a specific day
  */
-export function getSessionsForDay<T extends { dateObj: Date }>(
+export function getSessionsForDay<T extends { date: string }>(
   sessions: T[],
-  targetDate: Date
+  targetDate: Date,
 ): T[] {
   return sessions.filter((session) =>
-    isSameDayDate(new Date(session.dateObj), targetDate)
+    isSameDayDate(new Date(session.date), targetDate),
   );
 }
 
