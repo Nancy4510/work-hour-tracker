@@ -57,9 +57,6 @@ const formatDate = (date: Date): string => {
 };
 
 // Helper function to get day key (YYYY-MM-DD format)
-// const getDayKey = (date: Date): string => {
-//   return date.toISOString().split("T")[0];
-// };
 
 const getDayKey = (date: Date): string => {
   const y = date.getFullYear();
@@ -133,13 +130,6 @@ const TimeInputCell = ({
   }
 
   return (
-    // <Input
-    //   type="time"
-    //   value={value}
-    //   onChange={(e) => onChange(e.target.value)}
-    //   className="w-full glass-subtle"
-    //   placeholder="HH:MM"
-    // />
     <button
       type="button"
       onClick={() => {

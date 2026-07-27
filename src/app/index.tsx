@@ -95,10 +95,6 @@ export default function MainPage() {
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
 
-    // const weekStart = currentWeek[0];
-    // const weekEnd = new Date(currentWeek[6]);
-    // weekEnd.setHours(23, 59, 59, 999);
-
     const weekStart = new Date(currentWeek[0]);
     weekStart.setHours(0, 0, 0, 0);
     const weekEnd = new Date(currentWeek[6]);
@@ -143,13 +139,6 @@ export default function MainPage() {
               )}
             </span>
           </Switch>
-          {/* <span className="group-data-[size=default]/switch:size-5">
-            {mounted && isDarkMode ? (
-              <Moon className="size-3 text-primary" />
-            ) : (
-              <Sun className="size-3 text-yellow-500" />
-            )}
-          </span> */}
         </div>
 
         <div className="text-center space-y-2 py-6 glass rounded-2xl px-6">
@@ -163,21 +152,6 @@ export default function MainPage() {
             Registra tus horas de trabajo de forma simple
           </p>
         </div>
-        {/* 
-          <div className="absolute right-0 flex gap-2 items-center">
-            <Switch
-              id="dark-mode"
-              size="default"
-              onCheckedChange={() => {
-                if (theme === "dark") {
-                  setTheme("light");
-                } else {
-                  setTheme("dark");
-                }
-              }}
-            />
-            <Label htmlFor="dark-mode">Dark Mode</Label>
-          </div> */}
 
         <WeeklyTable
           currentWeek={currentWeek}
@@ -201,7 +175,6 @@ export default function MainPage() {
               clockIn,
               clockOut,
               date: date.toISOString(),
-              // dateObj: new Date(date),
             };
 
             setSessions([newSession, ...sessions]);
