@@ -56,9 +56,10 @@ export default function MainPage() {
   };
 
   const handleDeleteSession = (id: string) => {
-    setSessions(sessions.filter((s) => s.id !== id));
-    toast.success(`Sesión eliminada`);
+    setSessions((prev) => prev.filter((s) => s.id !== id));
+    toast.success("Sesión eliminada");
   };
+
   const weeklyHours = useMemo(() => {
     if (currentWeek.length === 0) return 0;
 
@@ -84,11 +85,11 @@ export default function MainPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <div className="max-w-2xl mx-auto p-4 md:p-8 space-y-6">
         {/* Header */}
 
-        <div className="absolute right-20 flex gap-2 items-center">
+        <div className="absolute right-2 top-2 sm:right-4 flex gap-2 items-center">
           <Switch
             id="dark-mode"
             size="default"

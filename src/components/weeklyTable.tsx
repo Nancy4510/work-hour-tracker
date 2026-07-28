@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import {
   Table,
@@ -158,6 +158,14 @@ export default function WeeklyTable({
   const [dayInputs, setDayInputs] = useState<
     Record<string, { clockIn: string; clockOut: string }>
   >({});
+
+  const sortedSessions = useMemo(
+    () =>
+      [...sessions].sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      ),
+    [sessions],
+  );
 
   // Update input value for a specific day
   const updateDayInput = (
@@ -361,18 +369,13 @@ export default function WeeklyTable({
             Detalle de Sesiones
           </h2>
           <div className="space-y-3">
-            {[...sessions]
-              .sort(
-                (a, b) =>
-                  new Date(b.date).getTime() - new Date(a.date).getTime(),
-              )
-              .map((session) => (
-                <WorkSessionCard
-                  key={session.id}
-                  session={session}
-                  onDelete={onDeleteSession}
-                />
-              ))}
+            {sortedSessions.map((session) => (
+              <WorkSessionCard
+                key={session.id}
+                session={session}
+                onDelete={onDeleteSession}
+              />
+            ))}
           </div>
         </div>
       ) : (
