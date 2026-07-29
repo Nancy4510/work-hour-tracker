@@ -40,6 +40,21 @@ export default function MainPage() {
 
   const currentWeek = useMemo(() => getWeekDates(selectedDate), [selectedDate]);
 
+  // const handleUpdateSession = (
+  //   id: string,
+  //   field: "clockIn" | "clockOut",
+  //   value: string,
+  // ) => {
+  //   if (!value) return;
+
+  //   setSessions((prev) =>
+  //     prev.map((session) =>
+  //       session.id === id ? { ...session, [field]: value } : session,
+  //     ),
+  //   );
+  //   toast.success(`Hora actualizada`);
+  // };
+
   const handleUpdateSession = (
     id: string,
     field: "clockIn" | "clockOut",
@@ -47,12 +62,17 @@ export default function MainPage() {
   ) => {
     if (!value) return;
 
-    setSessions((prev) =>
-      prev.map((session) =>
-        session.id === id ? { ...session, [field]: value } : session,
-      ),
-    );
-    toast.success(`Hora actualizada`);
+    const session = sessions.find((s) => s.id === id);
+    if (!session) return;
+
+    const next = { ...session, [field]: value };
+    if (calculateHours(next.clockIn, next.clockOut) <= 0) {
+      toast.error("La hora de salida debe ser después de la hora de entrada");
+      return;
+    }
+
+    setSessions((prev) => prev.map((s) => (s.id === id ? next : s)));
+    toast.success("Hora actualizada");
   };
 
   const handleDeleteSession = (id: string) => {
