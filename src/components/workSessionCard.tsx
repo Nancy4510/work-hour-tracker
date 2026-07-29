@@ -59,7 +59,7 @@ export default function WorkSessionCard({
             variant="ghost"
             size="icon"
             onClick={() => onDelete(session.id)}
-            className="ml-2 text-destructive hover:text-destructive hover:glass-subtle transition-all"
+            className="rounded-full ml-2 text-destructive hover:text-destructive hover:glass-subtle transition-all"
           >
             <Trash2 className="w-5 h-5" />
           </Button>
